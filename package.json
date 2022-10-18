@@ -39,7 +39,7 @@
     ]
   },
   "dependencies": {
-    "lamejs": "^1.2.1"
+    "lamejs": "github:zhuker/lamejs"
   },
   "peerDependencies": {
     "webrtc-adapter": ">=4.1.1"
