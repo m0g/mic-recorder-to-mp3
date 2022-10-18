@@ -98,6 +98,15 @@ System$1.arraycopy = function (src, srcPos, dest, destPos, length) {
         dest[destPos++] = src[srcPos++];
 };
 
+System$1.out = {};
+System$1.out.println = function (message) {
+    console.log(message);
+};
+
+System$1.out.printf = function () {
+    console.log.apply(console, arguments);
+};
+
 
 var Util$1 = {};
 Util$1.SQRT2 = 1.41421356237309504880;
@@ -1347,6 +1356,24 @@ function III_psy_ratio() {
 
 var III_psy_ratio_1 = III_psy_ratio;
 
+//package mp3;
+
+/* MPEG modes */
+function MPEGMode(ordinal) {
+    var _ordinal = ordinal;
+    this.ordinal = function () {
+        return _ordinal;
+    };
+}
+
+MPEGMode.STEREO = new MPEGMode(0);
+MPEGMode.JOINT_STEREO = new MPEGMode(1);
+MPEGMode.DUAL_CHANNEL = new MPEGMode(2);
+MPEGMode.MONO = new MPEGMode(3);
+MPEGMode.NOT_SET = new MPEGMode(4);
+
+var MPEGMode_1 = MPEGMode;
+
 var System$5 = common.System;
 var VbrMode$5 = common.VbrMode;
 var new_array_n$5 = common.new_array_n;
@@ -1450,6 +1477,7 @@ Encoder$2.fircoef = [-0.0207887 * 5, -0.0378413 * 5,
 function Encoder$2() {
     var NewMDCT = NewMDCT_1;
     var III_psy_ratio = III_psy_ratio_1;
+    var MPEGMode = MPEGMode_1;
 
     var FFTOFFSET = Encoder$2.FFTOFFSET;
     var MPG_MD_MS_LR = Encoder$2.MPG_MD_MS_LR;
@@ -2247,7 +2275,7 @@ var assert$3 = common.assert;
 
 
 function PsyModel() {
-
+    var MPEGMode = MPEGMode_1;
     var fft = new FFT_1();
 
     var LOG10 = 2.30258509299404568402;
@@ -4985,24 +5013,6 @@ function PsyModel() {
 
 var PsyModel_1 = PsyModel;
 
-//package mp3;
-
-/* MPEG modes */
-function MPEGMode$1(ordinal) {
-    var _ordinal = ordinal;
-    this.ordinal = function () {
-        return _ordinal;
-    };
-}
-
-MPEGMode$1.STEREO = new MPEGMode$1(0);
-MPEGMode$1.JOINT_STEREO = new MPEGMode$1(1);
-MPEGMode$1.DUAL_CHANNEL = new MPEGMode$1(2);
-MPEGMode$1.MONO = new MPEGMode$1(3);
-MPEGMode$1.NOT_SET = new MPEGMode$1(4);
-
-var MPEGMode_1 = MPEGMode$1;
-
 function LameGlobalFlags() {
 
     this.class_id = 0;
@@ -7122,13 +7132,13 @@ var assert$19 = common.assert;
 
 
 
-QuantizePVT$1.Q_MAX = (256 + 1);
-QuantizePVT$1.Q_MAX2 = 116;
-QuantizePVT$1.LARGE_BITS = 100000;
-QuantizePVT$1.IXMAX_VAL = 8206;
+QuantizePVT.Q_MAX = (256 + 1);
+QuantizePVT.Q_MAX2 = 116;
+QuantizePVT.LARGE_BITS = 100000;
+QuantizePVT.IXMAX_VAL = 8206;
 
-function QuantizePVT$1() {
-
+function QuantizePVT() {
+    var BitStream = BitStream_1;
     var tak = null;
     var rv = null;
     var psy = null;
@@ -7140,12 +7150,12 @@ function QuantizePVT$1() {
     };
 
     function POW20(x) {
-        assert$19(0 <= (x + QuantizePVT$1.Q_MAX2) && x < QuantizePVT$1.Q_MAX);
-        return pow20[x + QuantizePVT$1.Q_MAX2];
+        assert$19(0 <= (x + QuantizePVT.Q_MAX2) && x < QuantizePVT.Q_MAX);
+        return pow20[x + QuantizePVT.Q_MAX2];
     }
 
     this.IPOW20 = function (x) {
-        assert$19(0 <= x && x < QuantizePVT$1.Q_MAX);
+        assert$19(0 <= x && x < QuantizePVT.Q_MAX);
         return ipow20[x];
     };
 
@@ -7157,11 +7167,11 @@ function QuantizePVT$1() {
     /**
      * ix always <= 8191+15. see count_bits()
      */
-    var IXMAX_VAL = QuantizePVT$1.IXMAX_VAL;
+    var IXMAX_VAL = QuantizePVT.IXMAX_VAL;
 
     var PRECALC_SIZE = (IXMAX_VAL + 2);
 
-    var Q_MAX = QuantizePVT$1.Q_MAX;
+    var Q_MAX = QuantizePVT.Q_MAX;
 
 
     /**
@@ -7174,9 +7184,9 @@ function QuantizePVT$1() {
      * for short block, 0+(15<<2)+7*8 = 15*4+56 = 116
      * </CODE>
      */
-    var Q_MAX2 = QuantizePVT$1.Q_MAX2;
+    var Q_MAX2 = QuantizePVT.Q_MAX2;
 
-    var LARGE_BITS = QuantizePVT$1.LARGE_BITS;
+    var LARGE_BITS = QuantizePVT.LARGE_BITS;
 
 
     /**
@@ -8079,7 +8089,7 @@ function QuantizePVT$1() {
 
 }
 
-var QuantizePVT_1 = QuantizePVT$1;
+var QuantizePVT_1 = QuantizePVT;
 
 /*
  *	MP3 huffman table selecting and bit counting
@@ -8120,7 +8130,7 @@ var assert$18 = common.assert;
 
 
 
-function Takehiro$1() {
+function Takehiro() {
 
     var qupvt = null;
     this.qupvt = null;
@@ -8876,8 +8886,8 @@ function Takehiro$1() {
     var slen2_n = [1, 2, 4, 8, 1, 2, 4, 8, 2, 4, 8, 2, 4, 8, 4, 8];
     var slen1_tab = [0, 0, 0, 0, 3, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4];
     var slen2_tab = [0, 1, 2, 3, 0, 1, 2, 3, 1, 2, 3, 1, 2, 3, 2, 3];
-    Takehiro$1.slen1_tab = slen1_tab;
-    Takehiro$1.slen2_tab = slen2_tab;
+    Takehiro.slen1_tab = slen1_tab;
+    Takehiro.slen2_tab = slen2_tab;
 
     function scfsi_calc(ch, l3_side) {
         var sfb;
@@ -9245,7 +9255,7 @@ function Takehiro$1() {
     };
 }
 
-var Takehiro_1 = Takehiro$1;
+var Takehiro_1 = Takehiro;
 
 var System$17 = common.System;
 var Arrays$17 = common.Arrays;
@@ -9270,6 +9280,7 @@ BitStream$1.NEQ = function (a, b) {
 };
 
 function BitStream$1() {
+    var Lame = Lame_1;
     var self = this;
     var CRC16_POLYNOMIAL = 0x8005;
 
@@ -10284,6 +10295,7 @@ var assert$2 = common.assert;
 
 
 function Lame$1() {
+    var MPEGMode = MPEGMode_1;
     var self = this;
     var LAME_MAXALBUMART = (128 * 1024);
 
@@ -12044,7 +12056,8 @@ function Lame$1() {
             joff = 0 | Math.floor((offset * 2 * bpc) + bpc + .5);
             var xvalue = 0.;
             for (i = 0; i <= filter_l; ++i) {
-                var j2 = i + j - filter_l / 2;
+		/* force integer index */
+                var j2 = 0 | (i + j - filter_l / 2); 
                 var y;
                 assert$2(j2 < len);
                 assert$2(j2 + BLACKSIZE >= 0);
@@ -12126,7 +12139,8 @@ function Lame$1() {
 var Lame_1 = Lame$1;
 
 var VbrMode$20 = common.VbrMode;
-function Presets$1() {
+function Presets() {
+    var Lame = Lame_1;
     function VBRPresets(qual, comp, compS,
                         y, shThreshold, shThresholdS,
                         adj, adjShort, lower,
@@ -12596,7 +12610,7 @@ function Presets$1() {
 
 }
 
-var Presets_1 = Presets$1;
+var Presets_1 = Presets;
 
 function VBRQuantize() {
     var qupvt;
@@ -12696,7 +12710,7 @@ var assert$21 = common.assert;
 
 
 
-function Quantize$1() {
+function Quantize() {
     var bs;
     this.rv = null;
     var rv;
@@ -14141,7 +14155,7 @@ function Quantize$1() {
 
 }
 
-var Quantize_1 = Quantize$1;
+var Quantize_1 = Quantize;
 
 /*
  *      bit reservoir source file
@@ -14212,7 +14226,7 @@ var Quantize_1 = Quantize$1;
 
 var assert$23 = common.assert;
 
-function Reservoir$1() {
+function Reservoir() {
 	var bs;
 
 	this.setModules  = function(_bs) {
@@ -14439,7 +14453,7 @@ function Reservoir$1() {
 	};
 }
 
-var Reservoir_1 = Reservoir$1;
+var Reservoir_1 = Reservoir;
 
 function Version() {
 
@@ -15497,15 +15511,15 @@ var VBRTag_1 = VBRTag;
 var new_byte = common.new_byte;
 var assert = common.assert;
 
-Lame = Lame_1;
-Presets = Presets_1;
-GainAnalysis = GainAnalysis_1;
-QuantizePVT = QuantizePVT_1;
-Quantize = Quantize_1;
-Takehiro = Takehiro_1;
-Reservoir = Reservoir_1;
-MPEGMode = MPEGMode_1;
-BitStream = BitStream_1;
+
+
+
+
+
+
+
+
+
 
 
 
@@ -15553,18 +15567,18 @@ function Mp3Encoder(channels, samplerate, kbps) {
         samplerate = 44100;
         kbps = 128;
     }
-    var lame = new Lame();
+    var lame = new Lame_1();
     var gaud = new GetAudio();
-    var ga = new GainAnalysis();
-    var bs = new BitStream();
-    var p = new Presets();
-    var qupvt = new QuantizePVT();
-    var qu = new Quantize();
+    var ga = new GainAnalysis_1();
+    var bs = new BitStream_1();
+    var p = new Presets_1();
+    var qupvt = new QuantizePVT_1();
+    var qu = new Quantize_1();
     var vbr = new VBRTag_1();
     var ver = new Version_1();
     var id3 = new ID3Tag();
-    var rv = new Reservoir();
-    var tak = new Takehiro();
+    var rv = new Reservoir_1();
+    var tak = new Takehiro_1();
     var parse = new Parse();
     var mpg = new MPGLib();
 
@@ -15585,7 +15599,7 @@ function Mp3Encoder(channels, samplerate, kbps) {
     gfp.num_channels = channels;
     gfp.in_samplerate = samplerate;
     gfp.brate = kbps;
-    gfp.mode = MPEGMode.STEREO;
+    gfp.mode = MPEGMode_1.STEREO;
     gfp.quality = 3;
     gfp.bWriteVbrTag = false;
     gfp.disable_reservoir = true;
